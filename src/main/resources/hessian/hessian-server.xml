@@ -10,7 +10,7 @@
 	default-lazy-init="false">
 
 	<!----> 
-	<bean name="hessian/BalanceTransDb"
+	<bean name="/lot_comm_accessdb/hessian/BalanceTransDb"
 		class="org.springframework.remoting.caucho.HessianServiceExporter">
 		<property name="serviceInterface" value="com.xinwei.commAccessDb.service.BalanceTransDb" />
 		<property name="service" ref="balanceTransDb" />
