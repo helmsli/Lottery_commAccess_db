@@ -10,7 +10,7 @@ public interface BalanceTransDb {
 	 * 
 	 * @param BalanceTransRunning
 	 */
-	public void insertBalanceTransRunning(BalanceTransRunning balanceTransRunning);
+	public int insertBalanceTransRunning(BalanceTransRunning balanceTransRunning);
 	/**
 	 * 根据条件查询需要处理的扣费记录
 	 * 
