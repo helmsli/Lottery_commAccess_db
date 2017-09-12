@@ -27,10 +27,16 @@ public interface BalanceTransRunningMapper {
 	 * @param balanceTransRunning
 	 * @return
 	 */
-	@Select("SELECT * FROM balanceTransRunning WHERE transactionTime = #{transactionTime} and userid=#{userid} and transid=#{transid}")
+	@Select("SELECT * FROM balanceTransRunning WHERE  transactionTime = #{transactionTime} and userid=#{userid} and transid=#{transid}")
 	//@ResultMap("com.xinwei.commAccessDb.domain.BalanceTransRunning")
 	//@ResultList
 	public List<BalanceTransRunning> selectBalanceTransRunning(BalanceTransRunning balanceTransRunning);
+	
+	
+	@Select("SELECT * FROM balanceTransRunning")
+	//@ResultMap("com.xinwei.commAccessDb.domain.BalanceTransRunning")
+	//@ResultList
+	public List<BalanceTransRunning> selectAllBTransRunning();
 	
 	/**
 	 * 更新扣费记录，更新状态

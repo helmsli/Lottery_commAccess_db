@@ -73,14 +73,7 @@ public class BalanceTransDbImpl implements BalanceTransDb {
 	protected boolean CheckTransferCrc(BalanceTransRunning initDbTransaction)
 	{
 		try {
-			String key = this.transferBalKey;
-			StringBuilder source = new StringBuilder();
-			source.append(initDbTransaction.getUserid());
-			source.append(SecurityUserAlgorithm.Prop_split);
-			source.append(initDbTransaction.getTransid());
-			source.append(SecurityUserAlgorithm.Prop_split);
-			source.append(initDbTransaction.getAmount());			
-			String checkCrc = SecurityUserAlgorithm.EncoderByMd5(key, source.toString());
+			String checkCrc = createDbCrc(initDbTransaction);
 			return checkCrc.equalsIgnoreCase(initDbTransaction.getChecksum());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

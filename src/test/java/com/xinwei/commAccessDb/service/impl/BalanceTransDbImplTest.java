@@ -2,7 +2,10 @@ package com.xinwei.commAccessDb.service.impl;
 
 import static org.junit.Assert.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -12,12 +15,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.xinwei.commAccessDb.domain.BalanceTransRunning;
+import com.xinwei.commAccessDb.mapper.BalanceTransRunningMapper;
 import com.xinwei.commAccessDb.service.BalanceTransDb;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 
 public class BalanceTransDbImplTest  {
-
+	@Autowired
+	private BalanceTransRunningMapper balanceTransRunningMapper;
+	
 	@Autowired
 	private BalanceTransDb balanceTransDb;
 	
@@ -94,6 +100,59 @@ public class BalanceTransDbImplTest  {
 			fail("testSelectBalanceTransRunning select error:found  others record.");	
 		}
 	}
+
+	public static String getTimeStrFromTransID(String reqTransId)
+	{
+		String ret=20+reqTransId.substring(2,14);
+		return ret;
+	}
+	public static Date getDateFromTransID(String reqTransId)
+	{
+		String timeStr=getTimeStrFromTransID(reqTransId);
+		SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
+		try
+		{
+			return simpleDateFormat.parse(timeStr);
+		}
+		catch (ParseException e)
+		{
+			return null;
+		}
+		
+	}
+	@Test
+	public void testSelectinitBalanceTransRunning() {
+		/**
+		 * 查询的在别的测试用例中已经测试，仅仅测试查询不到的情况
+		 */
+		BalanceTransRunning balanceTransRunning = this.createInitBalanceTransRunning();
+		BalanceTransRunning oBTransRunning = this.createInitBalanceTransRunning();
+		oBTransRunning.setTransid("002000082212000033333333");
+		oBTransRunning.setUserid(1671432903);
+		oBTransRunning.setTransactionTime(getDateFromTransID(oBTransRunning.getTransid()));
+		//查询多有记录
+		List<BalanceTransRunning> bTransRunningAlls = balanceTransRunningMapper.selectAllBTransRunning();
+		if(bTransRunningAlls==null || bTransRunningAlls.size()==0)
+		{
+			fail("testSelectBalanceTransRunning select error: not found  record.");	
+		}
+		else
+		{
+			System.out.println(bTransRunningAlls.toString());
+		}
+		
+		//确保查处一条记录
+		List<BalanceTransRunning> bTransRunnings = this.balanceTransDb.selectBalanceTransRunning(oBTransRunning);
+		if(bTransRunnings==null || bTransRunnings.size()==0)
+		{
+			fail("testSelectBalanceTransRunning select error: not found  record.");	
+		}
+		
+		
+		assertEquals("testSelectBalanceTransRunning  query is not equal.",1,bTransRunnings.size());
+		
+	}
+
 
 	@Test
 	public void testUpdateBalanceTransRunning() {

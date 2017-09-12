@@ -348,7 +348,10 @@ public class BalanceTransRunning implements Serializable {
 	}
 
 	public void setTransactionTime(Date transactionTime) {
-		this.transactionTime = transactionTime;
+		Calendar expireCalendar = Calendar.getInstance();
+		expireCalendar.setTime(transactionTime);
+		expireCalendar.set(Calendar.MILLISECOND, 0);		
+		this.transactionTime = expireCalendar.getTime();
 	}
 
 	public int getRunPriority() {
