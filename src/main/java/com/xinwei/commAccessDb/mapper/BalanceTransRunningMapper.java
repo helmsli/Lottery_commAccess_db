@@ -9,7 +9,8 @@ import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import com.xinwei.commAccessDb.domain.BalanceTransRunning;
+
+import com.xinwei.commAccessDb.domain.BalanceTransRunningDb;
 
 
 @Mapper
@@ -20,7 +21,7 @@ public interface BalanceTransRunningMapper {
 	 * @param balanceTransRunning
 	 */
 	@Insert("INSERT INTO balanceTransRunning(userid,transactionTime,transid,amount,expiretime,transdesc,balance,orderid,biztype,opertype,checksum,updatetime,bizsource,srcipaddress,status,runPriority) VALUES(#{userid},#{transactionTime},#{transid},#{amount},#{expiretime},#{transdesc},#{balance},#{orderid},#{biztype},#{opertype},#{checksum},#{updatetime},#{bizsource},#{srcipaddress},#{status},#{runPriority})")	   
-	public void insertBalanceTransRunning(BalanceTransRunning balanceTransRunning);
+	public void insertBalanceTransRunning(BalanceTransRunningDb balanceTransRunning);
 	/**
 	 * 根据条件查询需要处理的扣费记录
 	 * 
@@ -30,13 +31,13 @@ public interface BalanceTransRunningMapper {
 	@Select("SELECT * FROM balanceTransRunning WHERE  transactionTime = #{transactionTime} and userid=#{userid} and transid=#{transid}")
 	//@ResultMap("com.xinwei.commAccessDb.domain.BalanceTransRunning")
 	//@ResultList
-	public List<BalanceTransRunning> selectBalanceTransRunning(BalanceTransRunning balanceTransRunning);
+	public List<BalanceTransRunningDb> selectBalanceTransRunning(BalanceTransRunningDb balanceTransRunning);
 	
 	
 	@Select("SELECT * FROM balanceTransRunning")
 	//@ResultMap("com.xinwei.commAccessDb.domain.BalanceTransRunning")
 	//@ResultList
-	public List<BalanceTransRunning> selectAllBTransRunning();
+	public List<BalanceTransRunningDb> selectAllBTransRunning();
 	
 	/**
 	 * 更新扣费记录，更新状态
@@ -44,7 +45,7 @@ public interface BalanceTransRunningMapper {
 	 * @param balanceTransRunning
 	 */
 	@Update("update  balanceTransRunning set status = #{status},updatetime=#{updatetime},checksum=#{checksum},balance=#{balance} where transactionTime = #{transactionTime} and userid=#{userid} and transid=#{transid}")
-	public int updateBalanceTransRunning(BalanceTransRunning balanceTransRunning);
+	public int updateBalanceTransRunning(BalanceTransRunningDb balanceTransRunning);
 
 	/**
 	 * 按照userID和Transaction，transTime删除交易记录
@@ -52,5 +53,5 @@ public interface BalanceTransRunningMapper {
 	 * @return
 	 */
 	@Delete("DELETE FROM balanceTransRunning where transactionTime = #{transactionTime} and userid=#{userid} and transid=#{transid}")
-	public int deleteBalanceTransRunning(BalanceTransRunning balanceTransRunning);
+	public int deleteBalanceTransRunning(BalanceTransRunningDb balanceTransRunning);
 }
