@@ -60,10 +60,9 @@ public class BalanceTransRunningDb implements Serializable {
 
 	/** 交易当前状态. */
 	private int status;
-	
+
 	/** 业务level*/
 	private int runPriority;
-	
 
 	/**
 	 * Constructor.
@@ -90,7 +89,6 @@ public class BalanceTransRunningDb implements Serializable {
 		return this.userid;
 	}
 
-	
 	/**
 	 * Set the 业务唯一标识.
 	 * 
@@ -123,6 +121,7 @@ public class BalanceTransRunningDb implements Serializable {
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
+
 	/**
 	 * Get the 交易金额.
 	 * 
@@ -131,7 +130,7 @@ public class BalanceTransRunningDb implements Serializable {
 	public BigDecimal getAmount() {
 		return this.amount;
 	}
-	
+
 	public double getAmountDouble() {
 		return this.amount.doubleValue();
 	}
@@ -143,6 +142,9 @@ public class BalanceTransRunningDb implements Serializable {
 	 *            业务有效期
 	 */
 	public void setExpiretime(Date expiretime) {
+		if (expiretime == null) {
+			return;
+		}
 		try {
 			Calendar expireCalendar = Calendar.getInstance();
 			expireCalendar.setTime(expiretime);
@@ -191,7 +193,7 @@ public class BalanceTransRunningDb implements Serializable {
 	public void setBalance(double balance) {
 		this.balance = new BigDecimal(balance);
 	}
-	
+
 	public void setBalance(BigDecimal balance) {
 		this.balance = balance;
 	}
@@ -204,9 +206,11 @@ public class BalanceTransRunningDb implements Serializable {
 	public BigDecimal getBalance() {
 		return this.balance;
 	}
+
 	public double getBalanceDouble() {
 		return this.balance.doubleValue();
 	}
+
 	/**
 	 * Set the orderId.
 	 * 
@@ -290,6 +294,9 @@ public class BalanceTransRunningDb implements Serializable {
 	 *            业务更新时间
 	 */
 	public void setUpdatetime(Date updatetime) {
+		if (updatetime == null) {
+			return;
+		}
 		try {
 			Calendar expireCalendar = Calendar.getInstance();
 			expireCalendar.setTime(updatetime);
@@ -372,10 +379,13 @@ public class BalanceTransRunningDb implements Serializable {
 	}
 
 	public void setTransactionTime(Date transactionTime) {
+		if (transactionTime == null) {
+			return;
+		}
 		try {
 			Calendar expireCalendar = Calendar.getInstance();
 			expireCalendar.setTime(transactionTime);
-			expireCalendar.set(Calendar.MILLISECOND, 0);		
+			expireCalendar.set(Calendar.MILLISECOND, 0);
 			this.transactionTime = expireCalendar.getTime();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -394,14 +404,13 @@ public class BalanceTransRunningDb implements Serializable {
 	@Override
 	public String toString() {
 		return "BalanceTransRunning [userid=" + userid + ", transactionTime=" + transactionTime + ", transid=" + transid
-				+ ", amount=" + amount.doubleValue() + ", expiretime=" + expiretime + ", transdesc=" + transdesc + ", balance="
-				+ balance.doubleValue() + ", orderid=" + orderid + ", biztype=" + biztype + ", opertype=" + opertype + ", checksum="
-				+ checksum + ", updatetime=" + updatetime + ", bizsource=" + bizsource + ", srcipaddress="
-				+ srcipaddress + ", status=" + status + ", runPriority=" + runPriority + "]";
+				+ ", amount=" + amount.doubleValue() + ", expiretime=" + expiretime + ", transdesc=" + transdesc
+				+ ", balance=" + balance.doubleValue() + ", orderid=" + orderid + ", biztype=" + biztype + ", opertype="
+				+ opertype + ", checksum=" + checksum + ", updatetime=" + updatetime + ", bizsource=" + bizsource
+				+ ", srcipaddress=" + srcipaddress + ", status=" + status + ", runPriority=" + runPriority + "]";
 	}
-	
-	public BalanceTransRunning getBalanceTransRunning()
-	{
+
+	public BalanceTransRunning getBalanceTransRunning() {
 		BalanceTransRunning newB = new BalanceTransRunning();
 		newB.setAmount(this.getAmountDouble());
 		newB.setBalance(this.getBalanceDouble());
@@ -421,9 +430,8 @@ public class BalanceTransRunningDb implements Serializable {
 		newB.setUserid(this.getUserid());
 		return newB;
 	}
-     
-	public BalanceTransRunningDb(BalanceTransRunning balanceTransRunning)
-	{
+
+	public BalanceTransRunningDb(BalanceTransRunning balanceTransRunning) {
 		this.setAmount(balanceTransRunning.getAmount());
 		this.setBalance(balanceTransRunning.getBalance());
 		this.setBizsource(balanceTransRunning.getBizsource());
@@ -440,7 +448,7 @@ public class BalanceTransRunningDb implements Serializable {
 		this.setTransid(balanceTransRunning.getTransid());
 		this.setUpdatetime(balanceTransRunning.getUpdatetime());
 		this.setUserid(balanceTransRunning.getUserid());
-		
+
 	}
-    
+
 }

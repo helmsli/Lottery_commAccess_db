@@ -59,10 +59,9 @@ public class BalanceTransRunning implements Serializable {
 
 	/** 交易当前状态. */
 	private int status;
-	
+
 	/** 业务level*/
 	private int runPriority;
-	
 
 	/**
 	 * Constructor.
@@ -89,7 +88,6 @@ public class BalanceTransRunning implements Serializable {
 		return this.userid;
 	}
 
-	
 	/**
 	 * Set the 业务唯一标识.
 	 * 
@@ -135,6 +133,9 @@ public class BalanceTransRunning implements Serializable {
 	 *            业务有效期
 	 */
 	public void setExpiretime(Date expiretime) {
+		if (expiretime == null) {
+			return;
+		}
 		try {
 			Calendar expireCalendar = Calendar.getInstance();
 			expireCalendar.setTime(expiretime);
@@ -276,6 +277,9 @@ public class BalanceTransRunning implements Serializable {
 	 *            业务更新时间
 	 */
 	public void setUpdatetime(Date updatetime) {
+		if (updatetime == null) {
+			return;
+		}
 		try {
 			Calendar expireCalendar = Calendar.getInstance();
 			expireCalendar.setTime(updatetime);
@@ -358,10 +362,13 @@ public class BalanceTransRunning implements Serializable {
 	}
 
 	public void setTransactionTime(Date transactionTime) {
+		if (transactionTime == null) {
+			return;
+		}
 		try {
 			Calendar expireCalendar = Calendar.getInstance();
 			expireCalendar.setTime(transactionTime);
-			expireCalendar.set(Calendar.MILLISECOND, 0);		
+			expireCalendar.set(Calendar.MILLISECOND, 0);
 			this.transactionTime = expireCalendar.getTime();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -385,7 +392,5 @@ public class BalanceTransRunning implements Serializable {
 				+ checksum + ", updatetime=" + updatetime + ", bizsource=" + bizsource + ", srcipaddress="
 				+ srcipaddress + ", status=" + status + ", runPriority=" + runPriority + "]";
 	}
-     
-	
-    
+
 }
