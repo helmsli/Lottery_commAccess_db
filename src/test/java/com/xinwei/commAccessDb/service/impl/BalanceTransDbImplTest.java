@@ -1,6 +1,8 @@
 package com.xinwei.commAccessDb.service.impl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.fail;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,18 +19,18 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.xinwei.commAccessDb.domain.BalanceTransRunning;
 import com.xinwei.commAccessDb.mapper.BalanceTransRunningMapper;
 import com.xinwei.commAccessDb.service.BalanceTransDb;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 
-public class BalanceTransDbImplTest  {
+public class BalanceTransDbImplTest {
 	@Autowired
 	private BalanceTransRunningMapper balanceTransRunningMapper;
-	
+
 	@Autowired
 	private BalanceTransDb balanceTransDb;
-	
-	protected BalanceTransRunning createInitBalanceTransRunning()
-	{
+
+	protected BalanceTransRunning createInitBalanceTransRunning() {
 		BalanceTransRunning balanceTransRunning = new BalanceTransRunning();
 		balanceTransRunning.setAmount(123.344d);
 		balanceTransRunning.setBalance(233.12d);
@@ -51,24 +53,24 @@ public class BalanceTransDbImplTest  {
 		balanceTransRunning.setTransactionTime(now.getTime());
 		return balanceTransRunning;
 	}
+
 	@Test
 	public void testInsertBalanceTransRunning() {
 		BalanceTransRunning balanceTransRunning = this.createInitBalanceTransRunning();
 		balanceTransDb.deleteBalanceTransRunning(balanceTransRunning);
 		balanceTransDb.insertBalanceTransRunning(balanceTransRunning);
 		List<BalanceTransRunning> bTransRunnings = this.balanceTransDb.selectBalanceTransRunning(balanceTransRunning);
-		if(bTransRunnings==null || bTransRunnings.size()==0)
-		{
-			fail("testInsertBalanceTransRunning insert error:not found record.");	
-		}
-		else
-		{
+		if (bTransRunnings == null || bTransRunnings.size() == 0) {
+			fail("testInsertBalanceTransRunning insert error:not found record.");
+		} else {
 			BalanceTransRunning queryBTrans = bTransRunnings.get(0);
-			assertEquals("testInsertBalanceTransRunning insert and query is not equal.",balanceTransRunning.toString(),queryBTrans.toString());
+			assertEquals("testInsertBalanceTransRunning insert and query is not equal.", balanceTransRunning.toString(),
+					queryBTrans.toString());
 			balanceTransRunning.setAmount(0);
-			assertNotEquals("testInsertBalanceTransRunning insert and query is not equal.",balanceTransRunning.toString(),queryBTrans.toString());
+			assertNotEquals("testInsertBalanceTransRunning insert and query is not equal.",
+					balanceTransRunning.toString(), queryBTrans.toString());
 		}
-		
+
 	}
 
 	@Test
@@ -83,43 +85,38 @@ public class BalanceTransDbImplTest  {
 		balanceTransDb.deleteBalanceTransRunning(oBTransRunning);
 		balanceTransDb.deleteBalanceTransRunning(balanceTransRunning);
 		//插入两条记录
-		balanceTransDb.insertBalanceTransRunning(balanceTransRunning);		
+		balanceTransDb.insertBalanceTransRunning(balanceTransRunning);
 		balanceTransDb.insertBalanceTransRunning(oBTransRunning);
 		//确保查处一条记录
 		List<BalanceTransRunning> bTransRunnings = this.balanceTransDb.selectBalanceTransRunning(oBTransRunning);
-		if(bTransRunnings==null || bTransRunnings.size()==0)
-		{
-			fail("testSelectBalanceTransRunning select error: not found  record.");	
+		if (bTransRunnings == null || bTransRunnings.size() == 0) {
+			fail("testSelectBalanceTransRunning select error: not found  record.");
 		}
-		assertEquals("testSelectBalanceTransRunning  query is not equal.",1,bTransRunnings.size());
+		assertEquals("testSelectBalanceTransRunning  query is not equal.", 1, bTransRunnings.size());
 		//删除新的，保留其余的
 		balanceTransDb.deleteBalanceTransRunning(balanceTransRunning);
 		bTransRunnings = this.balanceTransDb.selectBalanceTransRunning(balanceTransRunning);
-		if(bTransRunnings!=null && bTransRunnings.size()>0)
-		{
-			fail("testSelectBalanceTransRunning select error:found  others record.");	
+		if (bTransRunnings != null && bTransRunnings.size() > 0) {
+			fail("testSelectBalanceTransRunning select error:found  others record.");
 		}
 	}
 
-	public static String getTimeStrFromTransID(String reqTransId)
-	{
-		String ret=20+reqTransId.substring(2,14);
+	public static String getTimeStrFromTransID(String reqTransId) {
+		String ret = 20 + reqTransId.substring(2, 14);
 		return ret;
 	}
-	public static Date getDateFromTransID(String reqTransId)
-	{
-		String timeStr=getTimeStrFromTransID(reqTransId);
-		SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
-		try
-		{
+
+	public static Date getDateFromTransID(String reqTransId) {
+		String timeStr = getTimeStrFromTransID(reqTransId);
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+		try {
 			return simpleDateFormat.parse(timeStr);
-		}
-		catch (ParseException e)
-		{
+		} catch (ParseException e) {
 			return null;
 		}
-		
+
 	}
+
 	@Test
 	public void testSelectinitBalanceTransRunning() {
 		/**
@@ -131,28 +128,25 @@ public class BalanceTransDbImplTest  {
 		oBTransRunning.setUserid(1671432903);
 		oBTransRunning.setTransactionTime(getDateFromTransID(oBTransRunning.getTransid()));
 		//查询多有记录
-		List<BalanceTransRunning> bTransRunningAlls = balanceTransRunningMapper.selectAllBTransRunning();
-		if(bTransRunningAlls==null || bTransRunningAlls.size()==0)
-		{
-			fail("testSelectBalanceTransRunning select error: not found  record.");	
-		}
-		else
-		{
-			System.out.println(bTransRunningAlls.toString());
-		}
-		
+		//		List<BalanceTransRunning> bTransRunningAlls = balanceTransRunningMapper.selectAllBTransRunning();
+		//		if(bTransRunningAlls==null || bTransRunningAlls.size()==0)
+		//		{
+		//			fail("testSelectBalanceTransRunning select error: not found  record.");	
+		//		}
+		//		else
+		//		{
+		//			System.out.println(bTransRunningAlls.toString());
+		//		}
+
 		//确保查处一条记录
 		List<BalanceTransRunning> bTransRunnings = this.balanceTransDb.selectBalanceTransRunning(oBTransRunning);
-		if(bTransRunnings==null || bTransRunnings.size()==0)
-		{
-			fail("testSelectBalanceTransRunning select error: not found  record.");	
+		if (bTransRunnings == null || bTransRunnings.size() == 0) {
+			fail("testSelectBalanceTransRunning select error: not found  record.");
 		}
-		
-		
-		assertEquals("testSelectBalanceTransRunning  query is not equal.",1,bTransRunnings.size());
-		
-	}
 
+		assertEquals("testSelectBalanceTransRunning  query is not equal.", 1, bTransRunnings.size());
+
+	}
 
 	@Test
 	public void testUpdateBalanceTransRunning() {
@@ -160,7 +154,7 @@ public class BalanceTransDbImplTest  {
 		//删除记录
 		balanceTransDb.deleteBalanceTransRunning(balanceTransRunning);
 		//插入记录
-		balanceTransDb.insertBalanceTransRunning(balanceTransRunning);		
+		balanceTransDb.insertBalanceTransRunning(balanceTransRunning);
 		balanceTransRunning.setStatus(256);
 		balanceTransRunning.setBalance(100000.3445d);
 		balanceTransRunning.setChecksum("newCheckSum");
@@ -170,27 +164,22 @@ public class BalanceTransDbImplTest  {
 		balanceTransRunning.setUpdatetime(now.getTime());
 		int updateRow = balanceTransDb.updateBalanceTransRunning(balanceTransRunning);
 		List<BalanceTransRunning> bTransRunnings = this.balanceTransDb.selectBalanceTransRunning(balanceTransRunning);
-		if(bTransRunnings!=null && bTransRunnings.size()>0)
-		{
-			assertEquals("testUpdateBalanceTransRunning  query is not equal.",balanceTransRunning.toString(),bTransRunnings.get(0).toString());
+		if (bTransRunnings != null && bTransRunnings.size() > 0) {
+			assertEquals("testUpdateBalanceTransRunning  query is not equal.", balanceTransRunning.toString(),
+					bTransRunnings.get(0).toString());
 			balanceTransRunning.setStatus(299990);
-			assertNotEquals("testUpdateBalanceTransRunning  query is  equal.",balanceTransRunning.toString(),bTransRunnings.get(0).toString());
-				
+			assertNotEquals("testUpdateBalanceTransRunning  query is  equal.", balanceTransRunning.toString(),
+					bTransRunnings.get(0).toString());
+
+		} else {
+			fail("testUpdateBalanceTransRunning  error:found  others record.");
+
 		}
-		else
-		{
-			fail("testUpdateBalanceTransRunning  error:found  others record.");	
-			
-		}
-		assertEquals("testUpdateBalanceTransRunning  row numbers error.",1,updateRow);
+		assertEquals("testUpdateBalanceTransRunning  row numbers error.", 1, updateRow);
 		balanceTransDb.deleteBalanceTransRunning(balanceTransRunning);
 		updateRow = balanceTransDb.updateBalanceTransRunning(balanceTransRunning);
-		assertEquals("testUpdateBalanceTransRunning  update not record error.",0,updateRow);
-		
-		
-				
-	}
+		assertEquals("testUpdateBalanceTransRunning  update not record error.", 0, updateRow);
 
-	
+	}
 
 }
